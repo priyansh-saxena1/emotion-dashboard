@@ -3,6 +3,8 @@ import { Music } from 'lucide-react';
 
 export function LoginView() {
   const handleLogin = () => {
+    console.log('🔐 [LOGIN] User clicked login button');
+    console.log('🔐 [LOGIN] Redirecting to /api/login');
     window.location.href = '/api/login';
   };
 

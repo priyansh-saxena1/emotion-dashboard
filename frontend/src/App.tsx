@@ -13,12 +13,28 @@ function AppContent() {
   }, []);
 
   const checkAuthStatus = async () => {
+    console.log('🔐 [AUTH] Checking authentication status...');
+    console.log('🔐 [AUTH] Current cookies:', document.cookie);
+    
     try {
-      const response = await fetch('/api/user/top-tracks');
+      const response = await fetch('/api/user/top-tracks', {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+      
+      console.log('🔐 [AUTH] Auth check response status:', response.status);
+      
       if (response.ok) {
+        console.log('🔐 [AUTH] User is authenticated');
         dispatch({ type: 'SET_USER', payload: { isLoggedIn: true } });
+      } else {
+        console.log('🔐 [AUTH] User is not authenticated (response not ok)');
+        dispatch({ type: 'SET_USER', payload: { isLoggedIn: false } });
       }
     } catch (error) {
+      console.log('🔐 [AUTH] User is not authenticated (error):', error);
       // User is not logged in, which is fine
       dispatch({ type: 'SET_USER', payload: { isLoggedIn: false } });
     }

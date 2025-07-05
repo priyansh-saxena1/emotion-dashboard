@@ -22,14 +22,26 @@ def get_session_data(cookie_value: str) -> Optional[dict]:
 
 def get_session_token(request: Request) -> str:
     """Get access token from session"""
+    print(f"🔍 [AUTH] Checking session for request from {request.client.host}")
+    print(f"🔍 [AUTH] Request cookies: {request.cookies}")
+    
     session_cookie = request.cookies.get("session")
     if not session_cookie:
+        print(f"❌ [AUTH] No session cookie found")
         raise HTTPException(status_code=401, detail="Not authenticated")
     
+    print(f"🔍 [AUTH] Session cookie found: {session_cookie[:20]}...")
+    
     session_data = get_session_data(session_cookie)
-    if not session_data or "access_token" not in session_data:
+    if not session_data:
+        print(f"❌ [AUTH] Failed to decode session data")
         raise HTTPException(status_code=401, detail="Invalid session")
     
+    if "access_token" not in session_data:
+        print(f"❌ [AUTH] No access token in session data")
+        raise HTTPException(status_code=401, detail="Invalid session")
+    
+    print(f"✅ [AUTH] Valid session found, access token: {session_data['access_token'][:20]}...")
     return session_data["access_token"]
 
 async def handle_spotify_login():
@@ -47,9 +59,12 @@ async def handle_spotify_login():
 
 async def handle_spotify_callback(code: str, response: Response):
     """Handle Spotify OAuth callback"""
+    print(f"🔄 [CALLBACK] Received Spotify callback with code: {code[:20]}...")
     try:
         # Exchange code for tokens
+        print(f"🔄 [CALLBACK] Exchanging code for tokens...")
         token_data = await spotify_client.exchange_code_for_tokens(code)
+        print(f"✅ [CALLBACK] Token exchange successful")
         
         # Create session data
         session_data = {
@@ -57,12 +72,17 @@ async def handle_spotify_callback(code: str, response: Response):
             "refresh_token": token_data.get("refresh_token"),
             "expires_at": token_data.get("expires_in", 3600)
         }
+        print(f"🔍 [CALLBACK] Session data created with access token: {session_data['access_token'][:20]}...")
         
         # Create secure session cookie
         session_cookie = create_session_cookie(session_data)
+        print(f"🍪 [CALLBACK] Session cookie created: {session_cookie[:20]}...")
         
         # Set cookie and redirect to frontend
-        response = RedirectResponse(url=settings.FRONTEND_URL)
+        frontend_url = settings.FRONTEND_URL
+        print(f"🔄 [CALLBACK] Redirecting to frontend: {frontend_url}")
+        
+        response = RedirectResponse(url=frontend_url)
         response.set_cookie(
             key="session",
             value=session_cookie,
@@ -72,10 +92,11 @@ async def handle_spotify_callback(code: str, response: Response):
             max_age=3600
         )
         
+        print(f"✅ [CALLBACK] Successfully set session cookie and redirecting")
         return response
         
     except Exception as e:
-        print(f"Error in Spotify callback: {e}")
+        print(f"❌ [CALLBACK] Error in Spotify callback: {e}")
         # Redirect to frontend with error
         error_url = f"{settings.FRONTEND_URL}?error=auth_failed"
         return RedirectResponse(url=error_url)

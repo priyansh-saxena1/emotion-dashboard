@@ -14,19 +14,35 @@ export function DashboardView() {
   }, []);
 
   const fetchTopTracks = async () => {
+    console.log('🎵 [FRONTEND] Starting to fetch top tracks...');
     dispatch({ type: 'SET_LOADING', payload: { key: 'tracks', value: true } });
     
     try {
-      const response = await fetch('/api/user/top-tracks');
+      console.log('🎵 [FRONTEND] Making request to /api/user/top-tracks');
+      console.log('🎵 [FRONTEND] Current cookies:', document.cookie);
+      
+      const response = await fetch('/api/user/top-tracks', {
+        credentials: 'include', // Important: include cookies
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+      
+      console.log('🎵 [FRONTEND] Response status:', response.status);
+      console.log('🎵 [FRONTEND] Response headers:', Object.fromEntries(response.headers.entries()));
       
       if (!response.ok) {
-        throw new Error('Failed to fetch top tracks');
+        const errorText = await response.text();
+        console.error('🎵 [FRONTEND] Error response:', errorText);
+        throw new Error(`Failed to fetch top tracks: ${response.status} ${errorText}`);
       }
       
       const data = await response.json();
+      console.log('🎵 [FRONTEND] Successfully fetched tracks:', data);
       dispatch({ type: 'SET_TOP_TRACKS', payload: data.tracks });
     } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: 'Failed to load your top tracks. Please try again.' });
+      console.error('🎵 [FRONTEND] Error fetching top tracks:', error);
+      dispatch({ type: 'SET_ERROR', payload: `Failed to load your top tracks: ${error.message}` });
     } finally {
       dispatch({ type: 'SET_LOADING', payload: { key: 'tracks', value: false } });
     }
