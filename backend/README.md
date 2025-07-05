@@ -36,7 +36,7 @@ Edit `.env` with your actual credentials:
 
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
 2. Create a new app
-3. Add `http://localhost:8000/api/callback` to Redirect URIs
+3. Add `http://127.0.0.1:8000/callback` to Redirect URIs
 4. Copy Client ID and Client Secret to `.env`
 
 ### 4. OpenRouter Setup
@@ -81,14 +81,14 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ## API Documentation
 
 Once running, visit:
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+- **Swagger UI**: http://127.0.0.1:8000/docs
+- **ReDoc**: http://127.0.0.1:8000/redoc
 
 ## Frontend Integration
 
 The backend is designed to work with the React frontend. Make sure:
 
-1. Frontend is running on `http://localhost:3000`
+1. Frontend is running on `http://127.0.0.1:3000`
 2. CORS is properly configured (already set up)
 3. All API calls use the correct endpoints
 
