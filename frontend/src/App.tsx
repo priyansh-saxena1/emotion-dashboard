@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AppProvider, useAppContext } from './contexts/AppContext';
 import { LoginView } from './views/LoginView';
 import { DashboardView } from './views/DashboardView';
+import { API_ENDPOINTS } from './config';
 
 function AppContent() {
   const { state, dispatch } = useAppContext();
@@ -17,8 +18,7 @@ function AppContent() {
     console.log('🔐 [AUTH] Current cookies:', document.cookie);
     
     try {
-      const backendUrl = 'http://127.0.0.1:8000';
-      const response = await fetch(`${backendUrl}/api/user/top-tracks`, {
+      const response = await fetch(API_ENDPOINTS.TOP_TRACKS, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

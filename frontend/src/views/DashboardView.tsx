@@ -4,6 +4,7 @@ import { TrackGrid } from '../components/TrackGrid';
 import { Heatmap } from '../components/Heatmap';
 import { RecommendationList } from '../components/RecommendationList';
 import { Music, AlertCircle, X } from 'lucide-react';
+import { API_ENDPOINTS } from '../config';
 
 export function DashboardView() {
   const { state, dispatch } = useAppContext();
@@ -18,11 +19,10 @@ export function DashboardView() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'tracks', value: true } });
     
     try {
-      const backendUrl = 'http://127.0.0.1:8000';
-      console.log('🎵 [FRONTEND] Making request to backend:', `${backendUrl}/api/user/top-tracks`);
+      console.log('🎵 [FRONTEND] Making request to backend:', API_ENDPOINTS.TOP_TRACKS);
       console.log('🎵 [FRONTEND] Current cookies:', document.cookie);
       
-      const response = await fetch(`${backendUrl}/api/user/top-tracks`, {
+      const response = await fetch(API_ENDPOINTS.TOP_TRACKS, {
         credentials: 'include', // Important: include cookies
         headers: {
           'Accept': 'application/json',
@@ -60,8 +60,7 @@ export function DashboardView() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'analysis', value: true } });
     
     try {
-      const backendUrl = 'http://127.0.0.1:8000';
-      const response = await fetch(`${backendUrl}/api/analyze`, {
+      const response = await fetch(API_ENDPOINTS.ANALYZE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

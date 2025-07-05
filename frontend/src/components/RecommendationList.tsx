@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAppContext } from '../contexts/AppContext';
 import { Music } from 'lucide-react';
+import { API_ENDPOINTS } from '../config';
 
 const emotions = ['joy', 'sadness', 'calm', 'excitement', 'anger'];
 
@@ -12,8 +13,7 @@ export function RecommendationList() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'recommendations', value: true } });
     
     try {
-      const backendUrl = 'http://127.0.0.1:8000';
-      const response = await fetch(`${backendUrl}/api/recommendations?emotion=${selectedEmotion}`, {
+      const response = await fetch(`${API_ENDPOINTS.RECOMMENDATIONS}?emotion=${selectedEmotion}`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

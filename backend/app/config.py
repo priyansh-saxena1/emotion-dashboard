@@ -7,7 +7,7 @@ class Settings:
     # Spotify API Configuration
     SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
     SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
-    SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI", "http://127.0.0.1:8000/callback")
+    SPOTIFY_REDIRECT_URI = os.getenv("SPOTIFY_REDIRECT_URI", "http://localhost:8000/callback")
     
     # OpenRouter API Configuration
     OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -21,6 +21,6 @@ class Settings:
     ANALYSIS_CACHE_TTL = 3600  # 1 hour
     
     # Frontend URL for redirects
-    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://127.0.0.1:5173")
+    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 
 settings = Settings() 
