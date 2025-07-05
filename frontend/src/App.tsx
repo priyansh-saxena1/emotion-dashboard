@@ -17,7 +17,8 @@ function AppContent() {
     console.log('🔐 [AUTH] Current cookies:', document.cookie);
     
     try {
-      const response = await fetch('/api/user/top-tracks', {
+      const backendUrl = 'http://127.0.0.1:8000';
+      const response = await fetch(`${backendUrl}/api/user/top-tracks`, {
         credentials: 'include',
         headers: {
           'Accept': 'application/json',

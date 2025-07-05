@@ -1,11 +1,12 @@
 import React from 'react';
 import { Music } from 'lucide-react';
+import { API_ENDPOINTS } from '../config';
 
 export function LoginView() {
   const handleLogin = () => {
     console.log('🔐 [LOGIN] User clicked login button');
-    console.log('🔐 [LOGIN] Redirecting to /api/login');
-    window.location.href = '/api/login';
+    console.log('🔐 [LOGIN] Redirecting to backend login endpoint');
+    window.location.href = API_ENDPOINTS.LOGIN;
   };
 
   return (

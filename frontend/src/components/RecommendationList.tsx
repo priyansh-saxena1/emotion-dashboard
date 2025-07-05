@@ -12,7 +12,13 @@ export function RecommendationList() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'recommendations', value: true } });
     
     try {
-      const response = await fetch(`/api/recommendations?emotion=${selectedEmotion}`);
+      const backendUrl = 'http://127.0.0.1:8000';
+      const response = await fetch(`${backendUrl}/api/recommendations?emotion=${selectedEmotion}`, {
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch recommendations');

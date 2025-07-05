@@ -18,10 +18,11 @@ export function DashboardView() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'tracks', value: true } });
     
     try {
-      console.log('🎵 [FRONTEND] Making request to /api/user/top-tracks');
+      const backendUrl = 'http://127.0.0.1:8000';
+      console.log('🎵 [FRONTEND] Making request to backend:', `${backendUrl}/api/user/top-tracks`);
       console.log('🎵 [FRONTEND] Current cookies:', document.cookie);
       
-      const response = await fetch('/api/user/top-tracks', {
+      const response = await fetch(`${backendUrl}/api/user/top-tracks`, {
         credentials: 'include', // Important: include cookies
         headers: {
           'Accept': 'application/json',
@@ -59,11 +60,13 @@ export function DashboardView() {
     dispatch({ type: 'SET_LOADING', payload: { key: 'analysis', value: true } });
     
     try {
-      const response = await fetch('/api/analyze', {
+      const backendUrl = 'http://127.0.0.1:8000';
+      const response = await fetch(`${backendUrl}/api/analyze`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ track_ids: selectedTrackIds }),
       });
       
