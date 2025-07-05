@@ -21,6 +21,6 @@ class Settings:
     ANALYSIS_CACHE_TTL = 3600  # 1 hour
     
     # Frontend URL for redirects
-    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://127.0.0.1:3000")
+    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://127.0.0.1:5173")
 
 settings = Settings() 
